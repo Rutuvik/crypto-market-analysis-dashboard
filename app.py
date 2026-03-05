@@ -10,11 +10,11 @@ st.title("Crypto Market Analysis Dashboard")
 
 
 coins = {
-    "Bitcoin": "BTCUSDT",
-    "Ethereum": "ETHUSDT",
-    "Solana": "SOLUSDT",
-    "Chainlink": "LINKUSDT",
-    "Polygon": "MATICUSDT"
+    "Bitcoin": "bitcoin",
+    "Ethereum": "ethereum",
+    "Solana": "solana",
+    "Chainlink": "chainlink",
+    "Polygon": "polygon"
 }
 
 
