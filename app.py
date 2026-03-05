@@ -45,13 +45,17 @@ df = get_crypto_data(symbol=coin_symbol, interval=interval, limit=limit)
 
 
 df = add_indicators(df)
-
+df=df.dropna()
 
 trend = detect_trend(df)
 
 
 support, resistance = support_resistance(df)
 
+
+if df.empty:
+    st.warning("Market data not available. Please refresh.")
+    st.stop()
 
 current_price = df["close"].iloc[-1]
 
