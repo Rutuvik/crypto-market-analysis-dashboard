@@ -62,7 +62,14 @@ col1.metric("Price", f"${current_price:,.2f}")
 
 col2.metric("Trend", trend)
 
-col3.metric("RSI", f"{df['rsi'].iloc[-1]:.2f}")
+rsi_series = df["rsi"].dropna()
+
+if len(rsi_series) > 0:
+    rsi_value = rsi_series.iloc[-1]
+else:
+    rsi_value = 0
+
+col3.metric("RSI", f"{rsi_value:.2f}")
 
 fig = plot_chart(df, support, resistance)
 

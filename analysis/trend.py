@@ -13,6 +13,13 @@ def add_indicators(df):
 
 def detect_trend(df):
 
+    # remove NaN values
+    df = df.dropna()
+
+    # if dataframe becomes empty return safe value
+    if len(df) == 0:
+        return "Sideways"
+
     ma20 = df["ma20"].iloc[-1]
     ma50 = df["ma50"].iloc[-1]
 
