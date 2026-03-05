@@ -5,14 +5,16 @@ import pandas as pd
 def get_crypto_data(symbol="BTCUSDT", interval="1h", limit=200):
 
     url = "https://api.binance.com/api/v3/klines"
-
+    headers = {
+    "User-Agent": "Mozilla/5.0"
+}
     params = {
         "symbol": symbol,
         "interval": interval,
         "limit": limit
     }
 
-    response = requests.get(url, params=params)
+    response = requests.get(url, params=params,headers=headers)
     data = response.json()
 
     df = pd.DataFrame(data, columns=[
