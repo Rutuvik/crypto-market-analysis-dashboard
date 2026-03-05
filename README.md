@@ -10,6 +10,7 @@ The system allows users to explore market trends, visualize price action, and un
 # Live Deployment
 
 Live Application
+https://crypto-market-analysis-dashboard.streamlit.app/
 
 
 GitHub Repository
