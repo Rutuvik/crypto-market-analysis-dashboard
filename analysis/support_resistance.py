@@ -1,6 +1,7 @@
 def support_resistance(df):
 
-    support = df["low"].nsmallest(2).values
-    resistance = df["high"].nlargest(2).values
+    support = df["low"].rolling(20).min().iloc[-1]
+
+    resistance = df["high"].rolling(20).max().iloc[-1]
 
     return support, resistance

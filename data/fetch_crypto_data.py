@@ -1,34 +1,49 @@
 import requests
 import pandas as pd
 
+PRODUCTS = {
+    "BTCUSDT": "BTC-USD",
+    "ETHUSDT": "ETH-USD",
+    "SOLUSDT": "SOL-USD",
+    "LINKUSDT": "LINK-USD",
+    "MATICUSDT": "MATIC-USD"
+}
 
-def get_crypto_data(symbol="bitcoin", interval="1h", limit=200):
+INTERVAL_MAP = {
+    "1h": 3600,
+    "4h": 14400,
+    "12h": 43200,
+    "1d": 86400
+}
 
-    url = f"https://api.coingecko.com/api/v3/coins/{symbol}/market_chart"
 
-    params = {
-        "vs_currency": "usd",
-        "days": "30"
-    }
+def get_crypto_data(symbol="BTCUSDT", interval="1h", limit=200):
 
-    response = requests.get(url, params=params)
+    product = PRODUCTS[symbol]
 
-    data = response.json()
+    granularity = INTERVAL_MAP[interval]
 
-    if "prices" not in data:
+    url = f"https://api.exchange.coinbase.com/products/{product}/candles"
+
+    params = {"granularity": granularity}
+
+    headers = {"User-Agent": "Mozilla/5.0"}
+
+    r = requests.get(url, params=params, headers=headers)
+
+    data = r.json()
+
+    if not isinstance(data, list) or len(data) == 0:
         return pd.DataFrame()
 
-    prices = data["prices"]
+    df = pd.DataFrame(data, columns=[
+        "time","low","high","open","close","volume"
+    ])
 
-    df = pd.DataFrame(prices, columns=["timestamp", "close"])
+    df["open_time"] = pd.to_datetime(df["time"], unit="s")
 
-    df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
+    df = df[["open_time","open","high","low","close","volume"]]
 
-    df["open"] = df["close"]
-    df["high"] = df["close"]
-    df["low"] = df["close"]
-    df["volume"] = 0
-
-    df = df.rename(columns={"timestamp": "open_time"})
+    df = df.sort_values("open_time")
 
     return df
